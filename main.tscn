@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://b3scmm5r6a23q"]
+
+[ext_resource type="Script" uid="uid://d13h0f2lcvqs1" path="res://Main.cs" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://dhbipgy3mk1sq" path="res://Scripts/Controllers/InputReader.cs" id="2_0xm2m"]
+
+[sub_resource type="SystemFont" id="SystemFont_ig7tw"]
+font_names = PackedStringArray("Monospace")
+
+[node name="Main" type="Node2D" unique_id=1289658602 node_paths=PackedStringArray("textView", "clock", "_inputs", "timer")]
+script = ExtResource("1_ig7tw")
+textView = NodePath("RichTextLabel")
+clock = NodePath("Clock")
+_inputs = NodePath("Node")
+timer = NodePath("Timer")
+
+[node name="Clock" type="Label" parent="." unique_id=79169883]
+offset_left = 671.0
+offset_top = 17.0
+offset_right = 735.0
+offset_bottom = 40.0
+text = "Stove is "
+
+[node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=665522368]
+offset_right = 802.0
+offset_bottom = 178.0
+theme_override_fonts/normal_font = SubResource("SystemFont_ig7tw")
+bbcode_enabled = true
+text = "ddssdfsdfdsfdsfsdfd"
+fit_content = true
+
+[node name="Timer" type="Timer" parent="." unique_id=109302197]
+wait_time = 0.1
+autostart = true
+
+[node name="Node" type="Node" parent="." unique_id=39110176]
+script = ExtResource("2_0xm2m")
+
+[node name="Control" type="Control" parent="." unique_id=335488930]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Panel" type="Panel" parent="Control" unique_id=806220663]
+layout_mode = 0
+offset_left = 141.0
+offset_top = 1.0
+offset_right = 182.0
+offset_bottom = 16.0
+
+[node name="Label" type="Label" parent="Control/Panel" unique_id=1821743335]
+layout_mode = 0
+offset_right = 163.0
+offset_bottom = 138.0
+text = "[t	"
