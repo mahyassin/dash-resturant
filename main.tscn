@@ -35,21 +35,8 @@ autostart = true
 [node name="Node" type="Node" parent="." unique_id=39110176]
 script = ExtResource("2_0xm2m")
 
-[node name="Control" type="Control" parent="." unique_id=335488930]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="Panel" type="Panel" parent="Control" unique_id=806220663]
-layout_mode = 0
-offset_left = 141.0
-offset_top = 1.0
-offset_right = 182.0
-offset_bottom = 16.0
-
-[node name="Label" type="Label" parent="Control/Panel" unique_id=1821743335]
-layout_mode = 0
-offset_right = 163.0
-offset_bottom = 138.0
-text = "[t	"
+[node name="Label" type="Label" parent="." unique_id=595513149]
+offset_left = 308.0
+offset_top = 10.0
+offset_right = 348.0
+offset_bottom = 33.0

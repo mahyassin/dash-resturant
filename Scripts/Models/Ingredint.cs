@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Scripts.Models
 {   
@@ -19,28 +20,33 @@ namespace Scripts.Models
         ONION,
         TOMATO,
     }
+    
 
-    public class Dish
+    public static class IdRegestiry
     {
-        private List<Ingredint> _ingredints;
+        static public HashSet<int> ContainersId = new(0);
+        
+    }
 
-        public void AddIngredent(Ingredint ingredint)
+    public class Container: Onhand
+    {
+        public int Id;
+        public List<Ingredint> Ingredints;
+        public ContainerType Type;
+        public int DirtLevel = 5;
+
+        public bool CanCoock {get;}
+        public bool IsStackable {get;}
+
+        public Container(bool canCoock, bool isStackable, ContainerType type)
         {
-            _ingredints.Add(ingredint);
+            CanCoock = canCoock;
+            IsStackable = isStackable;
+            Id = IdRegestiry.ContainersId.Max() + 1;
+            Type = type;
         }
     }
 
-
-    public class Plate: Onhand
-    {
-        public Dish OnPlate;
-        public int DirtLevel = 5;
-    }
-
-    public class Pot: Onhand
-    {
-        public List<Ingredint> Ingredints;
-    }
 
     public abstract class Onhand
     {
@@ -55,6 +61,12 @@ namespace Scripts.Models
     {
         PASSIVE,
         ACTIVE,
+    }
+
+    public enum ContainerType
+    {
+        DISH,
+        POT,
     }
 
 }

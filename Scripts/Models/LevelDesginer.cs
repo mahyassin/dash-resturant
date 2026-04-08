@@ -7,6 +7,11 @@ namespace Scripts.Models
 {
 	public class MapModel
 	{   
+
+        // ⌜ ﹉ ⌝
+        // ꤯     ꤯
+        // ⌞ ﹍ ⌟
+
 		
 		private string[] _mapCode = {
 			" WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW",
@@ -19,47 +24,6 @@ namespace Scripts.Models
 			" WW .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. WW",
 			" WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW",
 		};
-
-		private string[] _mapCodeV2 = {
-			" WWWW WWWW WWWW WWWW WWWW WWWW WWWW WWWW WWWW WWWW WWWW WWWW WWWW WWWW WWWW WWWW ",
-			" WWWW WWWW WWWW WWWW WWWW WWWW WWWW WWWW WWWW WWWW WWWW WWWW WWWW WWWW WWWW WWWW ",
-
-			" WWWW .... .... .... .... .... .... WWWW .... .... .... .... .... .... .... WWWW ",
-			" WWWW Go.G .... .... .... .... SP.S WWWW .... .... .... .... .... .... .... WWWW ",
-
-			" WWWW .... ttoo .... .... .... .... WWWW .... .... .... .... .... .... .... WWWW ",
-			" WWWW Gt.G 0P!0 .... .... .... .... WWWW .... .... .... .... .... .... .... WWWW ",
-
-			" WWWW dddd .... .... .... .... .... WWWW .... .... .... .... .... .... .... WWWW ",
-			" WWWW Td.T .... .... .... .... .... WWWW .... .... .... .... .... .... .... WWWW ",
-
-			" WWWW .... .... .... .... .... .... WWWW WWWW WWWW WWWW .... WWWW WWWW WWWW WWWW ",
-			" WWWW T..T .... .... .... .... .... WWWW WWWW WWWW WWWW .... WWWW WWWW WWWW WWWW ",
-
-			" WWWW .... .... .... .... .... .... WWWW .... .... .... .... .... .... .... WWWW ",
-			" WWWW T..T .... .... .... .... .... WWWW .... .... .... .... .... .... .... WWWW ",
-
-			" WWWW .... .... .... .... .... .... WWWW .... .... .... .... .... .... .... WWWW ",
-			" WWWW T..T .... .... .... .... .... WWWW .... .... .... .... .... .... .... WWWW ",
-
-			" WWWW .... .... .... .... .... .... .... .... .... .... .... .... .... .... WWWW ",
-			" WWWW T..T .... .... .... .... .... .... .... .... .... .... .... .... .... WWWW ",
-
-			" WWWW .... .... .... .... .... .... WWWW .... .... .... .... .... .... .... WWWW ",
-			" WWWW .... .... .... .... .... .... WWWW .... .... .... .... .... .... .... WWWW ",
-
-			" WWWW .... .... .... .... .... .... WWWW .... .... .... .... .... .... .... WWWW ",
-			" WWWW .... .... .... .... .... .... WWWW .... .... .... .... .... .... .... WWWW ",
-
-			" WWWW WWWW WWWW WWWW WWWW WWWW WWWW WWWW WWWW WWWW WWWW WWWW WWWW WWWW WWWW WWWW ",
-			" WWWW WWWW WWWW WWWW WWWW WWWW WWWW WWWW WWWW WWWW WWWW WWWW WWWW WWWW WWWW WWWW ",
-
-		};
-
-		
-		
-	
-	
 
 		public GameState GetMapCodeState() => MapToState(_mapCode);
 

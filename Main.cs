@@ -10,6 +10,8 @@ namespace Scripts.Controllers
 		[Export] private InputReader _inputs;
 		[Export] private Timer timer;
 
+		[Export] private Label Containers;
+
 
 		private GameState _state;
 		private Systems _systems = new();
@@ -50,6 +52,8 @@ namespace Scripts.Controllers
 
 			textView.Text = text;
 			clock.Text = stateRender.DecodeClock(state);
+
+			
 		}
 
 		private void OnTimerTick()

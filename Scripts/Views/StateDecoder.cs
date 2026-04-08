@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
 using Scripts.Models;
 
 public partial class StateDecoder
@@ -16,7 +19,7 @@ public partial class StateDecoder
                 {
                     string basetile = cell.Occupier switch
                     {
-                        Player       => "P",
+                        Player       => "🖑",
                         WorkingStation tool  => DecodeTool(tool),
                         GoodsStock   => "G",
                         Table        => "T",
@@ -26,7 +29,12 @@ public partial class StateDecoder
 
                     string ontile = cell.Occupier?.OnHand switch
                     {
-                        Ingredint ingredint => "o ",
+                        Ingredint ingredint => DecodeIngredient(ingredint),
+                        Container container => container.Type switch
+                        {
+                            ContainerType.DISH => "d",
+                            ContainerType.POT => "p"
+                        },
                         _=> ". "
                         
                     };
@@ -42,6 +50,43 @@ public partial class StateDecoder
         }
         return output;
     } 
+
+    public string DecodeContainer(Container container)
+    {
+        var result = "";
+        foreach(var ingredint in container.Ingredints)
+        {
+            result += ingredint.Type switch
+            {
+                IngredintType.ONION => 'o',
+                IngredintType.TOMATO => 't',
+                _ => '?',
+            };
+        }
+
+        return result;
+    }
+
+    private string GetContent(List<Ingredint> container)
+    {
+        var result = "";
+        foreach(var content in container)
+        {
+            result += DecodeIngredient(content);
+        }
+
+        return result;
+    }
+
+    private string DecodeIngredient (Ingredint ingredint)
+    {
+        return ingredint.Type switch
+        {
+            IngredintType.ONION  => "o",
+            IngredintType.TOMATO => "t",
+            _ => "?"
+        };
+    }
     private string DecodeTool(WorkingStation stove)
     {
         string color = stove.StationState switch
