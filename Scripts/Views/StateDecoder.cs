@@ -84,8 +84,15 @@ public partial class StateDecoder
         foreach(var station in state.WorkStations)
         {
             var progress = station.GetProgress();
+            int value = progress.Sum(it => it.Cooking);
+            string color = progress?.LastOrDefault().Grade switch
+            {
+                CookGrade.Cooked => "green",
+                CookGrade.OverCooked => "red",
+                _ => "white",
+            }?? "white";
 
-            statoinsTimers += $"\n{station.GetType}: { new string('.', progress)}";
+            statoinsTimers += $"\n{station.GetType}: [color={color}]{ new string('.', value)}[/color]";
         }
         return mainClock + statoinsTimers;
     }
