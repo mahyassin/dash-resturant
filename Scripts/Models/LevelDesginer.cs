@@ -1,7 +1,5 @@
-using Godot;
-using System;
 using System.Collections.Generic;
-using System.Linq;
+
 
 namespace Scripts.Models
 {
@@ -17,7 +15,7 @@ namespace Scripts.Models
 			" WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW",
 			" WW .. .. P. .. .. .. .. S. WW .. .. .. .. .. .. .. WW",
 			" WW Go .. .. .. .. .. .. C. WW WW WW WW .. WW WW WW WW",
-			" WW Gt .. T. T. T. .. .. .. WW .. .. .. .. .. .. .. WW",
+			" WW Gt .. Td T. T. .. .. .. WW .. .. .. .. .. .. .. WW",
 			" WW WW WW WW WW WW WW .. WW WW .. .. .. .. .. .. .. WW",
 			" WW .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. WW",
 			" WW .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. WW",
@@ -37,7 +35,7 @@ namespace Scripts.Models
 			Player player = null;
 
 			int y = 0;
-			List<WorkingStation> tools = new();
+			List<IInteractalbe> tools = new();
 
 			char basetile = '?';
 			char ontile = '?';
@@ -52,9 +50,6 @@ namespace Scripts.Models
 				
 				foreach(var cell in row.Replace(" ", ""))
                 {
-					
-                   
-
 
                     if (basetile == '?')
                     {
@@ -66,20 +61,20 @@ namespace Scripts.Models
                         ontile = cell;
                     }
 
-                    Onhand onhand = ViewIngredint(ontile);
+                    ICarriable onhand = ViewIngredint(ontile);
 
                     IOccupier entity = basetile switch
                     {
                         'W' => new Wall(),
                         'P' => new Player(new Vector(x, y), onhand),
-                        'S' => new WorkingStation(WorkingStation.Type.STOVE, onhand),
-                        'C' => new WorkingStation(WorkingStation.Type.CUTTING_BOARD, onhand),
+                        'S' => new Stove(),
+                        'C' => new CuttingBoard(onhand as Ingredint),
                         'G' => new GoodsStock(onhand as Ingredint),
-                        'T' => new Table(),
+                        'T' => new Table(onhand),
                         _ => null
                     };
                     if (entity is Player) player = entity as Player;
-                    if (entity is WorkingStation tool) tools.Add(tool);
+                    if (entity is IInteractalbe station) tools.Add(station);
 
                     map[new Vector(x, y)] = new CellState(pos: new(x, y), entity);
 
@@ -96,12 +91,13 @@ namespace Scripts.Models
 			return new(mapWidth, maphieght, player, map, tools);
 		}
 
-        private static Onhand ViewIngredint(char ontile)
+        private static ICarriable ViewIngredint(char ontile)
         {
             return ontile switch
             {
                 't' => new Ingredint(IngredintType.TOMATO),
                 'o' => new Ingredint(IngredintType.ONION),
+                'd' => new Plate(),
                 _ => null
             };
         }

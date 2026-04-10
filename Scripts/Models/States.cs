@@ -10,11 +10,11 @@ namespace Scripts.Models
 		public int MapWidth {get;}
 		public int Maphieght {get;}
 		private Player _player;
-		public List<WorkingStation> WorkStations { get;}
+		public List<IInteractalbe> WorkStations { get;}
 
 		public int Tics = 0;
 	
-		public GameState(int mapWidth, int maphieght, Player player, Dictionary<Vector, CellState> map, List<WorkingStation> tools)
+		public GameState(int mapWidth, int maphieght, Player player, Dictionary<Vector, CellState> map, List<IInteractalbe> tools)
 		{
 			Maphieght = maphieght;
 			MapWidth = mapWidth;
@@ -29,7 +29,7 @@ namespace Scripts.Models
 	}
 
 
-public struct CellState{
+public class CellState{
 		public Vector Pos;
 		public bool IsWalkable => Occupier == null;
 		public IOccupier Occupier = null;

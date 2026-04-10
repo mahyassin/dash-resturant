@@ -2,11 +2,13 @@
 
 [ext_resource type="Script" uid="uid://d13h0f2lcvqs1" path="res://Main.cs" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://dhbipgy3mk1sq" path="res://Scripts/Controllers/InputReader.cs" id="2_0xm2m"]
+[ext_resource type="Script" uid="uid://1ach4jdgyseu" path="res://Scripts/Views/MapView.cs" id="3_h2yge"]
 
 [sub_resource type="SystemFont" id="SystemFont_ig7tw"]
 font_names = PackedStringArray("Monospace")
 
 [node name="Main" type="Node2D" unique_id=1289658602 node_paths=PackedStringArray("textView", "clock", "_inputs", "timer")]
+position = Vector2(0, 1)
 script = ExtResource("1_ig7tw")
 textView = NodePath("RichTextLabel")
 clock = NodePath("Clock")
@@ -40,3 +42,8 @@ offset_left = 308.0
 offset_top = 10.0
 offset_right = 348.0
 offset_bottom = 33.0
+
+[node name="Mapview" type="Node" parent="." unique_id=1009233092 node_paths=PackedStringArray("mapDispaly", "clockDisplay")]
+script = ExtResource("3_h2yge")
+mapDispaly = NodePath("../RichTextLabel")
+clockDisplay = NodePath("../Clock")

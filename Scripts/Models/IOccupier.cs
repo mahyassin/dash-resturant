@@ -1,89 +1,169 @@
+using System;
+using System.Diagnostics;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using Godot;
 
 namespace Scripts.Models
 {
+
+    public interface IProgressor
+    {
+        public void ProgressPassive();
+        public void ProgressActive();
+
+        public int GetProgress();
+
+    };
+    public interface IInteractalbe: IProgressor
+    {
+        public State ToolState{get; set;}
+        public void Interact();
+        public char ViewId {get;}
+    };
+
+    public enum State
+    {
+        ON, OFF, BROKEN
+    }
+
+  
+    
+
 	public abstract class IOccupier{
+        
 		public Vector Pos {get; set;}
-        public Onhand OnHand {get;set;}
-        public abstract bool Stacker {get;}
-        public int MaxStack => 4;
- 
+        public ICarriable OnHand {get;set;}
+        public abstract int AbilityCode {get;}
+
 	}
 
 
 	public class Player: IOccupier
 	{
-        public override bool Stacker => true;
-        public Player(Vector pos, Onhand onhand)
+        public Player(Vector pos, ICarriable onhand)
         {
 			Pos = pos;
             OnHand = onhand;
 		}
 
+        public override int AbilityCode => 0;
     }
 
-	public class WorkingStation: IOccupier, IInteractalbe
-	{
-        public override bool Stacker => true;
+    public class Stove: IOccupier, IInteractalbe, IProgressor
+    {
+        public State ToolState {get; set;} = State.OFF;
 
-        public ProgressType progressType{get;}
+        public char ViewId => 'S';
 
-        
-        public enum State
-        {
-            ON, OFF, BROKEN
-        }
-        public enum Type
-        {
-            STOVE, CUTTING_BOARD, DISH_WAHSER,
-        }
-        public Type StationType {get;}
-        public char ViewId {get;}
-        private State _state = State.OFF;
-        public State StationState => _state;
-		
+        public override int AbilityCode => Varifier.Coockable;
+
+        public int TotalProgression;
+
         public void Interact()
         {
-            if(_state == State.BROKEN) return;
-            if(_state == State.ON) {_state = State.OFF; return;}
-            if(_state == State.OFF) {_state = State.ON; }
-
+            ToolState = ToolState switch
+            {
+                State.ON     => State.OFF,
+                State.OFF    => State.ON,
+                _            => ToolState
+            };
         }
 
-        public WorkingStation(Type type, Onhand onhand)
+        public void ProgressPassive()
         {
-            StationType = type;
-            OnHand = onhand;
+            if (OnHand is not Pot onStove) {  return; }
+            if (onStove.GetIngredients().Count <= 0) { return;}
 
-            if(type == Type.CUTTING_BOARD)
+            foreach (var ingredien in onStove.GetIngredients())
             {
-                ViewId = 'C';
-                progressType = ProgressType.ACTIVE;
-            }
-
-             if(type == Type.DISH_WAHSER)
-            {
-                ViewId = 'D';
-                progressType = ProgressType.ACTIVE;
-            } 
             
-            if(type == Type.STOVE)
-            {
-                ViewId = 'S';
-                progressType = ProgressType.PASSIVE;
-                
+                if(ingredien.CoockProgression >= ingredien.MaxCocking) continue;
+
+                ingredien.CoockProgression ++;
+
+                return;
             }
+        }
+
+        public void ProgressActive()
+        {
+            
+        }
+
+        public int GetProgress()
+        {
+            if(OnHand == null) return 0;
+            int result =  (OnHand as Pot)?.GetIngredients()?.Sum(i => i?.CoockProgression?? 0)?? 0 ;
+
+            GD.Print(result);
+
+
+            return result;
+        }
+
+
+        public Stove()
+        {
+            OnHand = new Pot();
         }
     }
+
+    public class CuttingBoard(Ingredint choppable): IOccupier, IInteractalbe
+    {
+        public Ingredint OnBoard = choppable;
+
+        public State ToolState {get; set;} = State.OFF;
+
+        public char ViewId => 'C';
+
+        public override int AbilityCode => Varifier.Choppable;
+
+        public void Interact()
+        {
+            ToolState = ToolState switch
+            {
+                State.ON     => State.OFF,
+                State.OFF    => State.ON,
+                _            => ToolState
+            };
+        }
+          public void ProgressPassive()
+        {
+            
+        }
+
+        public void ProgressActive()
+        {
+            if(OnBoard == null) return;
+            
+            int cp = OnBoard.ChoppingProgression;
+
+            cp = cp  >= OnBoard.MaxChopping? cp: cp + 1;
+
+            OnBoard.ChoppingProgression = cp;
+
+            Interact();
+        }
+
+        public int GetProgress()
+        {
+            return OnBoard?.ChoppingProgression ?? 0;
+        }
+    }
+
 
     public class GoodsStock: IOccupier
     {
-        public override bool Stacker => true;
         private int _currentStock;
         public Ingredint Ingredint { get ; set; }
         public IngredintType Type {get;}
 
+        public override int AbilityCode => Varifier.Choppable | 
+            Varifier.Coockable | 
+            Varifier.Platable  | 
+            Varifier.Washable
+        ;
 
         public GoodsStock(Ingredint onhand)
         {
@@ -111,19 +191,23 @@ namespace Scripts.Models
     }
 
 
-    public class Wall: IOccupier
+    public class Wall : IOccupier
     {
-        public override bool Stacker => false;
+        public override int AbilityCode => 0;
     }
 
     public class Table : IOccupier
     {
-        public override bool Stacker => true;
-    }
+        public Table(ICarriable onhand)
+        {
+            OnHand = onhand;
+        }
 
-    public interface IInteractalbe
-    {
-        public void Interact();
+        public override int AbilityCode => Varifier.Choppable | 
+            Varifier.Coockable | 
+            Varifier.Platable  | 
+            Varifier.Washable
+            ;
     }
 
 }

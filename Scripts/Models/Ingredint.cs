@@ -1,11 +1,24 @@
-using Godot;
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using Godot;
 
 namespace Scripts.Models
 {   
-    public class Ingredint: Onhand
+    public interface ICarriable
+    {
+        int CapablityCode {get;}
+    };
+    public interface IOnplate;
+    public interface IChoppable;
+
+    public class Plate: ICarriable
+    {
+        public int CapablityCode => Varifier.Platable;
+
+        public class IOnplate;
+    }
+
+    public class Ingredint: ICarriable, IChoppable
     {
         public IngredintType Type {get;}
 
@@ -13,7 +26,12 @@ namespace Scripts.Models
         {
             Type = type;
         }
+        public int CoockProgression = 0;
+        public int ChoppingProgression = 0;
+        public int MaxCocking => 5;
+        public int MaxChopping =>5;
 
+        public int CapablityCode => Varifier.Platable | Varifier.Washable | Varifier.Choppable | Varifier.Coockable;
     }
     public enum IngredintType
     {
@@ -24,49 +42,25 @@ namespace Scripts.Models
 
     public static class IdRegestiry
     {
-        static public HashSet<int> ContainersId = new(0);
+        static public HashSet<int> ContainersId = new(){0};
         
     }
 
-    public class Container: Onhand
+    public class Pot: ICarriable
     {
-        public int Id;
-        public List<Ingredint> Ingredints;
-        public ContainerType Type;
-        public int DirtLevel = 5;
+        private List<Ingredint> _ingredints = new();
 
-        public bool CanCoock {get;}
-        public bool IsStackable {get;}
+        public int CapablityCode => Varifier.Coockable;
 
-        public Container(bool canCoock, bool isStackable, ContainerType type)
+        public void AddIngredient(Ingredint ingredint)
         {
-            CanCoock = canCoock;
-            IsStackable = isStackable;
-            Id = IdRegestiry.ContainersId.Max() + 1;
-            Type = type;
+            _ingredints.Add(ingredint);
+            GD.Print($"added count is {_ingredints.Count}");
+        }
+        
+        public List<Ingredint> GetIngredients()
+        {
+            return _ingredints;
         }
     }
-
-
-    public abstract class Onhand
-    {
-        public Dictionary<ProgressType, int> Progress = new()
-        {
-            {ProgressType.ACTIVE, 0},
-            {ProgressType.PASSIVE, 0},
-        };
-    }
-
-    public enum ProgressType 
-    {
-        PASSIVE,
-        ACTIVE,
-    }
-
-    public enum ContainerType
-    {
-        DISH,
-        POT,
-    }
-
 }

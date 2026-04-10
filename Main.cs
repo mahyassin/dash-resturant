@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using Scripts.Models;
 
@@ -28,9 +29,21 @@ namespace Scripts.Controllers
 			UpdateMap(_state);
 
 			timer.Timeout += OnTimerTick;
+
+			test();
+
 		}
 
-		private	void OnMove(Vector dir)
+        private void test()
+        {
+            Ingredint tomato = new(IngredintType.TOMATO);
+			Pot pot = new();
+			pot.AddIngredient(tomato);
+
+			GD.Print(pot.GetIngredients().Count);
+        }
+
+        private	void OnMove(Vector dir)
 		{
 			_systems.Move(_state.Player, _state, dir);
 
@@ -62,8 +75,9 @@ namespace Scripts.Controllers
 			UpdateMap(_state);
 			
 		}
-		
+
 	}
+	
 
 }
 

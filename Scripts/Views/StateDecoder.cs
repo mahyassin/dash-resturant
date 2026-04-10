@@ -19,8 +19,8 @@ public partial class StateDecoder
                 {
                     string basetile = cell.Occupier switch
                     {
-                        Player       => "🖑",
-                        WorkingStation tool  => DecodeTool(tool),
+                        Player       => "▼",
+                        IInteractalbe tool  => DecodeTool(tool),
                         GoodsStock   => "G",
                         Table        => "T",
                         _            => ".",
@@ -30,10 +30,11 @@ public partial class StateDecoder
                     string ontile = cell.Occupier?.OnHand switch
                     {
                         Ingredint ingredint => DecodeIngredient(ingredint),
-                        Container container => container.Type switch
+                        ICarriable container => container switch
                         {
-                            ContainerType.DISH => "d",
-                            ContainerType.POT => "p"
+                            Plate => "d ",
+                            Pot   => "P ",
+                            _     => "? "
                         },
                         _=> ". "
                         
@@ -51,63 +52,27 @@ public partial class StateDecoder
         return output;
     } 
 
-    public string DecodeContainer(Container container)
-    {
-        var result = "";
-        foreach(var ingredint in container.Ingredints)
-        {
-            result += ingredint.Type switch
-            {
-                IngredintType.ONION => 'o',
-                IngredintType.TOMATO => 't',
-                _ => '?',
-            };
-        }
 
-        return result;
-    }
-
-    private string GetContent(List<Ingredint> container)
-    {
-        var result = "";
-        foreach(var content in container)
-        {
-            result += DecodeIngredient(content);
-        }
-
-        return result;
-    }
 
     private string DecodeIngredient (Ingredint ingredint)
     {
         return ingredint.Type switch
         {
-            IngredintType.ONION  => "o",
-            IngredintType.TOMATO => "t",
+            IngredintType.ONION  => "o ",
+            IngredintType.TOMATO => "t ",
             _ => "?"
         };
     }
-    private string DecodeTool(WorkingStation stove)
+    private string DecodeTool(IInteractalbe stove)
     {
-        string color = stove.StationState switch
+        string color = stove.ToolState switch
         {
-            WorkingStation.State.BROKEN => "red",
-            WorkingStation.State.ON     => "green",
-            _                         => "gray"
+            State.BROKEN => "red",
+            State.ON     => "green",
+            _            => "gray"
             
         };
         return $"[color={color}]{stove.ViewId}[/color]";
-    }
-
-    private string DecodeOnHand(Ingredint ingredint)
-    {
-        return ingredint.Type switch
-        {
-            IngredintType.ONION  
-            => "o ",
-            IngredintType.TOMATO => "t ",
-            _                    => " .",
-        };
     }
 
 
@@ -118,9 +83,9 @@ public partial class StateDecoder
 
         foreach(var station in state.WorkStations)
         {
-            var progress = station.OnHand?.Progress;
+            var progress = station.GetProgress();
 
-            statoinsTimers += $"\n{station.StationType}: { new string('.', progress?[station.progressType]?? 0) }";
+            statoinsTimers += $"\n{station.GetType}: { new string('.', progress)}";
         }
         return mainClock + statoinsTimers;
     }
