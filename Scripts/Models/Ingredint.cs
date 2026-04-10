@@ -18,6 +18,26 @@ namespace Scripts.Models
         public class IOnplate;
     }
 
+    public struct Progress
+    {
+        public int Cooking = 0;
+        public int Choping = 0;
+        public int MaxCocking => 30;
+        public int MaxChopping =>5;
+        public CookGrade Grade =>  Cooking switch
+        {
+            <= 25 and > 15 => CookGrade.Cooked,
+            >  25          => CookGrade.OverCooked,
+            _              => CookGrade.Raw,
+        };
+
+        public Progress( int cook, int chop)
+        {
+            Cooking = cook;
+            Choping = chop;
+
+        }
+    }
     public class Ingredint: ICarriable, IChoppable
     {
         public IngredintType Type {get;}
@@ -26,19 +46,21 @@ namespace Scripts.Models
         {
             Type = type;
         }
-        public int CoockProgression = 0;
-        public int ChoppingProgression = 0;
-        public int MaxCocking => 5;
-        public int MaxChopping =>5;
-
+        public Progress progress = new();
+       
         public int CapablityCode => Varifier.Platable | Varifier.Washable | Varifier.Choppable | Varifier.Coockable;
     }
+
     public enum IngredintType
     {
         ONION,
         TOMATO,
     }
     
+    public enum CookGrade
+    {
+        Raw, MeduimRaw, Cooked, OverCooked,
+    }
 
     public static class IdRegestiry
     {

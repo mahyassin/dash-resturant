@@ -11,7 +11,7 @@ font_names = PackedStringArray("Monospace")
 position = Vector2(0, 1)
 script = ExtResource("1_ig7tw")
 textView = NodePath("RichTextLabel")
-clock = NodePath("Clock")
+clock = NodePath("RichTextLabel2")
 _inputs = NodePath("Node")
 timer = NodePath("Timer")
 
@@ -31,19 +31,20 @@ text = "ddssdfsdfdsfdsfsdfd"
 fit_content = true
 
 [node name="Timer" type="Timer" parent="." unique_id=109302197]
-wait_time = 0.1
+wait_time = 0.25
 autostart = true
 
 [node name="Node" type="Node" parent="." unique_id=39110176]
 script = ExtResource("2_0xm2m")
 
-[node name="Label" type="Label" parent="." unique_id=595513149]
-offset_left = 308.0
-offset_top = 10.0
-offset_right = 348.0
-offset_bottom = 33.0
-
 [node name="Mapview" type="Node" parent="." unique_id=1009233092 node_paths=PackedStringArray("mapDispaly", "clockDisplay")]
 script = ExtResource("3_h2yge")
 mapDispaly = NodePath("../RichTextLabel")
 clockDisplay = NodePath("../Clock")
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="." unique_id=316623940]
+offset_left = 850.0
+offset_top = 12.0
+offset_right = 1051.0
+offset_bottom = 165.0
+bbcode_enabled = true

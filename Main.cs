@@ -7,7 +7,7 @@ namespace Scripts.Controllers
 	public partial class Main : Node2D
 	{
 		[Export] private RichTextLabel textView;
-		[Export] private Label clock;
+		[Export] private RichTextLabel clock;
 		[Export] private InputReader _inputs;
 		[Export] private Timer timer;
 

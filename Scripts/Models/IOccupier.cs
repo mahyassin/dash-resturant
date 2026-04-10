@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
@@ -12,7 +13,7 @@ namespace Scripts.Models
         public void ProgressPassive();
         public void ProgressActive();
 
-        public int GetProgress();
+        public List<Progress> GetProgress();
 
     };
     public interface IInteractalbe: IProgressor
@@ -75,12 +76,14 @@ namespace Scripts.Models
             if (OnHand is not Pot onStove) {  return; }
             if (onStove.GetIngredients().Count <= 0) { return;}
 
+
             foreach (var ingredien in onStove.GetIngredients())
             {
+                var progress = ingredien.progress;
             
-                if(ingredien.CoockProgression >= ingredien.MaxCocking) continue;
+                if(progress.Cooking >= progress.MaxCocking) continue;
 
-                ingredien.CoockProgression ++;
+                ingredien.progress = new(progress.Choping++, progress.Choping);
 
                 return;
             }
@@ -91,15 +94,14 @@ namespace Scripts.Models
             
         }
 
-        public int GetProgress()
+        public List<Progress> GetProgress()
         {
-            if(OnHand == null) return 0;
-            int result =  (OnHand as Pot)?.GetIngredients()?.Sum(i => i?.CoockProgression?? 0)?? 0 ;
-
-            GD.Print(result);
+            if(OnHand == null) return null;
 
 
-            return result;
+            List<Progress> progress = (OnHand as Pot).GetIngredients().Select(ingredint => ingredint.progress).ToList();
+
+            return progress;
         }
 
 
@@ -137,18 +139,19 @@ namespace Scripts.Models
         {
             if(OnBoard == null) return;
             
-            int cp = OnBoard.ChoppingProgression;
+            int cp = OnBoard.progress.Choping;
 
-            cp = cp  >= OnBoard.MaxChopping? cp: cp + 1;
+            cp = cp  >= OnBoard.progress.MaxChopping? cp: cp + 1;
 
-            OnBoard.ChoppingProgression = cp;
+            OnBoard.progress.Choping = cp;
 
             Interact();
         }
 
-        public int GetProgress()
+        public List<Progress> GetProgress()
         {
-            return OnBoard?.ChoppingProgression ?? 0;
+            if(OnBoard == null) return new();
+            return new(){OnBoard.progress};
         }
     }
 
