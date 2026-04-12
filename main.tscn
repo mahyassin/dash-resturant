@@ -7,11 +7,15 @@
 [sub_resource type="SystemFont" id="SystemFont_ig7tw"]
 font_names = PackedStringArray("Monospace")
 
-[node name="Main" type="Node2D" unique_id=1289658602 node_paths=PackedStringArray("textView", "clock", "_inputs", "timer")]
+[sub_resource type="SystemFont" id="SystemFont_h2yge"]
+font_names = PackedStringArray("Monospace")
+
+[node name="Main" type="Node2D" unique_id=1289658602 node_paths=PackedStringArray("textView", "clock", "onPots", "_inputs", "timer")]
 position = Vector2(0, 1)
 script = ExtResource("1_ig7tw")
 textView = NodePath("RichTextLabel")
 clock = NodePath("RichTextLabel2")
+onPots = NodePath("Pot window")
 _inputs = NodePath("Node")
 timer = NodePath("Timer")
 
@@ -48,3 +52,10 @@ offset_top = 12.0
 offset_right = 1051.0
 offset_bottom = 165.0
 bbcode_enabled = true
+
+[node name="Pot window" type="Label" parent="." unique_id=1164432190]
+offset_left = 33.0
+offset_top = 421.0
+offset_right = 274.0
+offset_bottom = 529.0
+theme_override_fonts/font = SubResource("SystemFont_h2yge")

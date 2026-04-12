@@ -84,6 +84,8 @@ public partial class StateDecoder
         foreach(var station in state.WorkStations)
         {
             var progress = station.GetProgress();
+            if (progress == null) return mainClock + statoinsTimers;;
+
             int value = progress.Sum(it => it.Cooking);
             string color = progress?.LastOrDefault().Grade switch
             {
@@ -95,5 +97,26 @@ public partial class StateDecoder
             statoinsTimers += $"\n{station.GetType}: [color={color}]{ new string('.', value)}[/color]";
         }
         return mainClock + statoinsTimers;
+    }
+
+    public List<string> DecodePots(List<Pot> pots)
+    {
+        List<string> output = [];
+        foreach(var pot in pots)
+        {
+            string potString = $"pot: ";
+            foreach (var ingredien in pot.GetIngredients())
+            {
+                char symbol = ingredien.Type switch
+                {
+                    IngredintType.ONION  => 'o',
+                    IngredintType.TOMATO => 't',
+                    _                    => '.',
+                };
+                potString += symbol + ", ";
+            }
+            output.Add(potString);
+        }
+        return output;
     }
 }

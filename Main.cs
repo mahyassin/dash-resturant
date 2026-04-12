@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Godot;
 using Scripts.Models;
 
@@ -6,8 +8,43 @@ namespace Scripts.Controllers
 {
 	public partial class Main : Node2D
 	{
+
+		//⌜⎺⌝
+		//⎸ ⎹
+		//⌞⎽⌟
+		
+		private string CreatWidow(int width, List<string> content) 
+		{ 
+			int maxlenght = content.Select(it => it.Length).Max();
+			
+			if (maxlenght >= width + 2)
+			{
+				width = maxlenght + 2;
+			}
+			
+
+			string midSection = "";
+
+			foreach (var line in content)
+			{
+				midSection += $"⎸{line}{new string(' ',width - line.Length)}⎹\n";
+			}
+
+			string output = 
+			$"⌜{new string('⎺',width/2 -3) +" Pots " + new string('⎺',width/2 -3)}⌝\n" +
+			$"⎸{new string('⎺',width)}⎹\n"+
+
+			midSection +
+			
+			$"⌞{new string('⎽',width)}⌟\n";
+
+			return output;
+		}
+
+
 		[Export] private RichTextLabel textView;
 		[Export] private RichTextLabel clock;
+		[Export] private Label onPots;
 		[Export] private InputReader _inputs;
 		[Export] private Timer timer;
 
@@ -64,16 +101,22 @@ namespace Scripts.Controllers
 			}
 
 			textView.Text = text;
-			clock.Text = stateRender.DecodeClock(state);
-
+			onPots.Text = CreatWidow(20, stateRender.DecodePots(state.Pots));
 			
 		}
+
+		private void UpdateClock(GameState state)
+		{
+			clock.Text = stateRender.DecodeClock(state);
+
+		}
+
+	
 
 		private void OnTimerTick()
 		{
 			_systems.ProcessTick(_state);
-			UpdateMap(_state);
-			
+			UpdateClock(_state);
 		}
 
 	}

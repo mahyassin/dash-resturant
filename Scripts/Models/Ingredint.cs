@@ -61,13 +61,7 @@ namespace Scripts.Models
     {
         Raw, MeduimRaw, Cooked, OverCooked,
     }
-
-    public static class IdRegestiry
-    {
-        static public HashSet<int> ContainersId = new(){0};
-        
-    }
-
+    
     public class Pot: ICarriable
     {
         private List<Ingredint> _ingredints = new();

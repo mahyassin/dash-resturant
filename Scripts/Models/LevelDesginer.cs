@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 
 
 namespace Scripts.Models
@@ -33,9 +34,10 @@ namespace Scripts.Models
 
 			Dictionary<Vector, CellState> map = new();	
 			Player player = null;
+			List<IInteractalbe> tools = new();
+            List<Pot> pots = new();
 
 			int y = 0;
-			List<IInteractalbe> tools = new();
 
 			char basetile = '?';
 			char ontile = '?';
@@ -75,6 +77,7 @@ namespace Scripts.Models
                     };
                     if (entity is Player) player = entity as Player;
                     if (entity is IInteractalbe station) tools.Add(station);
+                    if (entity is Stove stove) {Debug.WriteLine("add pot"); pots.Add(stove.OnHand as Pot);}
 
                     map[new Vector(x, y)] = new CellState(pos: new(x, y), entity);
 
@@ -88,7 +91,7 @@ namespace Scripts.Models
 			}
 		
 
-			return new(mapWidth, maphieght, player, map, tools);
+			return new(mapWidth, maphieght, player, map, tools,pots);
 		}
 
         private static ICarriable ViewIngredint(char ontile)

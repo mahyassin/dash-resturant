@@ -11,16 +11,26 @@ namespace Scripts.Models
 		public int Maphieght {get;}
 		private Player _player;
 		public List<IInteractalbe> WorkStations { get;}
+		public List<Pot> Pots{ get; }
 
 		public int Tics = 0;
 	
-		public GameState(int mapWidth, int maphieght, Player player, Dictionary<Vector, CellState> map, List<IInteractalbe> tools)
+		public GameState(
+			int mapWidth,
+		 	int maphieght,
+			Player player,
+			Dictionary<Vector,
+			CellState> map,
+			List<IInteractalbe> tools,
+			List<Pot> pots
+		)
 		{
 			Maphieght = maphieght;
 			MapWidth = mapWidth;
 			_player = player;
 			_map = new(map);
 			WorkStations = tools;
+			Pots = pots;
 
 		}
 

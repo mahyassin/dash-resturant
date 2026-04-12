@@ -63,6 +63,8 @@ namespace Scripts.Models
 					actor.OnHand = null;
 
 					state.Map[targetPos] = new(targetPos, obj);
+					MapChanged?.Invoke(state);
+
 					return;
 					
 				}
@@ -70,6 +72,8 @@ namespace Scripts.Models
 
 				obj.OnHand = actor.OnHand;
 				actor.OnHand = null;
+				MapChanged?.Invoke(state);
+				
 
 
 				return;
